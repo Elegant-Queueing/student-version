@@ -1,0 +1,10 @@
+package com.example.q_student;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+public class WelcomeActivity {
+
+}

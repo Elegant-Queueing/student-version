@@ -1,4 +1,4 @@
-package com.student.q;
+package com.example.q_student;
 
 import org.junit.Test;
 
