@@ -27,3 +27,11 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+sourceSets {
+    test {
+        java {
+            srcDirs = ["app/src/test"]
+        }
+    }
+}
