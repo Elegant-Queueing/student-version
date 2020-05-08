@@ -10,6 +10,10 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
+      - slack/notify:
+          color: '#42e2f4'
+          message: This is a custom message notification
+          webhook: webhook
       - checkout
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
@@ -32,3 +36,6 @@ jobs:
       - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
           path: app/build/test-results
           # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+      - slack/status:
+          fail_only: false
+          webhook: 'https://hooks.slack.com/services/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'
