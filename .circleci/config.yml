@@ -1,6 +1,7 @@
 version: 2
 orbs:
   slack: circleci/slack@3.4.2
+  android: circleci/android@0.2.0
 jobs:
   build:
     working_directory: ~/code
