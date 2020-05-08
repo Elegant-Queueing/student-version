@@ -9,6 +9,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.3'
+        testCompile 'junit:junit:4.12' // maybe this should not be here
+        compile 'junit:junit:4.12'
         
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -27,7 +29,7 @@ allprojects {
 sourceSets {
     test {
         java {
-            srcDirs = ["app/src/test"]
+            srcDir = "app/src/test"
         }
     }
 }
