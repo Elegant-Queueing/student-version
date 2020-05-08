@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 apply plugin: 'java'
-allprojects {
+
+buildscript {
     
     repositories {
         google()
@@ -9,9 +10,6 @@ allprojects {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.3'
-        testCompile 'junit:junit:4.12' // maybe this should not be here
-        compile 'junit:junit:4.12'
-        
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
