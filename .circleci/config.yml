@@ -10,6 +10,10 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
+      - slack/notify:
+          color: '#42e2f4'
+          message: This is a custom message notification
+          webhook: webhook
       - checkout
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
@@ -35,3 +39,4 @@ jobs:
       - slack/status:
           fail_only: false
           webhook: '${SLACK_WEBHOOK}'
+
