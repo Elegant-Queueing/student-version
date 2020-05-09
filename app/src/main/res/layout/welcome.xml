@@ -15,28 +15,24 @@
         android:id="@+id/text_view_id"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="Welcome"
+        android:text="@string/welcome"
         android:textSize="36dp"
         android:textColor="@color/colorPrimary"
         android:layout_marginBottom="200dp"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/login"
+        android:id="@+id/login_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_marginBottom="16dp"
-        android:text="Login" />
+        android:text="@string/login" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/signup"
+        android:id="@+id/signup_view"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@id/login"
-        android:layout_toLeftOf="@id/login"
-        android:text="Sign Up" />
+        android:text="@string/signup" />
 
 
 
