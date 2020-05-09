@@ -27,7 +27,7 @@ allprojects {
 sourceSets {
     test {
         java {
-            srcDir = "app/src/test"
+            //srcDir = "app/src/test"
         }
     }
 }
