@@ -113,14 +113,14 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
         if(companyAction == null && companyCard.findViewById(R.id.leave_queue) == null) {
             companyAction = companyCard.findViewById(R.id.company_action);
         }
-        TextView frontAlert = view.findViewById(R.id.front_alert);
-        Button hereButton = view.findViewById(R.id.here_button);
-        frontAlert.invalidate();
-        hereButton.invalidate();
-        hereButton.setOnClickListener(this);
-        frontAlert.setText("You are in the top 5, let us know when you're here!");
-        hereButton.setVisibility(View.VISIBLE);
-        frontAlert.setVisibility(View.VISIBLE);
+//        TextView frontAlert = view.findViewById(R.id.front_alert);
+//        Button hereButton = view.findViewById(R.id.here_button);
+//        frontAlert.invalidate();
+//        hereButton.invalidate();
+//        hereButton.setOnClickListener(this);
+//        frontAlert.setText("You are in the top 5, let us know when you're here!");
+//        hereButton.setVisibility(View.VISIBLE);
+//        frontAlert.setVisibility(View.VISIBLE);
         companyAction.invalidate();
         companyAction.setText("Leave Queue");
         companyAction.setId(R.id.leave_queue);
@@ -269,11 +269,6 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
         }
     }
 
-    private class updateParams {
-        String wait;
-
-    }
-
 
     class CheckWait extends AsyncTask<Void, String, String> {
 
@@ -323,11 +318,9 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
                     String waitString = waitInt + " min, at position: " + jsonStatus.getInt("position");
                     if(jsonStatus.getInt("position") <= 5) {
                         alert = true;
+                        employee = jsonStatus.getJSONObject("employee").getString("id");
                     }
-                    employee = jsonStatus.getJSONObject("employee").getString("id");
                     publishProgress(waitString);
-
-
 
                 } catch (Exception e) {
                     try {
@@ -425,13 +418,19 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
             if (response == null) {
                 response = "THERE WAS AN ERROR";
             }
-            Log.i("INFO", response);
             try {
                 JSONObject jsonStatus = ((JSONObject) new JSONTokener(response).nextValue()).getJSONObject("queue-status");
-                queueJoined(jsonStatus.getJSONObject("employee").getString("id"));
+                if(jsonStatus.getInt("position") <= 5) {
+                    allowJoinPhysical();
+                }
+                Log.i("INFO", response);
+                queueJoined(null);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+
 
         }
     }
