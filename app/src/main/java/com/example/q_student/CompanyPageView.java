@@ -278,7 +278,6 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
         boolean queueJoined;
         boolean alert;
         boolean queueLeft;
-        String employee;
 
         public CheckWait(String company) {
             super();
@@ -287,7 +286,6 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
             queueJoined = false;
             queueLeft = false;
             alert = false;
-            employee = null;
         }
 
         protected String doInBackground(Void... urls) {
@@ -421,10 +419,12 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
             try {
                 JSONObject jsonStatus = ((JSONObject) new JSONTokener(response).nextValue()).getJSONObject("queue-status");
                 if(jsonStatus.getInt("position") <= 5) {
-                    allowJoinPhysical();
+                    queueJoined(null);
+                } else{
+                    queueJoined(jsonStatus.getString("employee"));
                 }
                 Log.i("INFO", response);
-                queueJoined(null);
+
 
             } catch (JSONException e) {
                 e.printStackTrace();
