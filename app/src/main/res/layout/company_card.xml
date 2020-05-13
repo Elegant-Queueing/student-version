@@ -4,7 +4,9 @@
     android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    app:cardElevation="6dp"
+    app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -35,7 +37,9 @@
             <TextView
                 android:id="@+id/company_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="24sp"/>
 
             <TextView
                 android:id="@+id/company_match"
@@ -58,7 +62,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/company_action"
                 style="?attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"

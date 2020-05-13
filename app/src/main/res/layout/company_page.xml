@@ -2,17 +2,59 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/main_layout"
+    >
 
-    <TextView
-        android:id="@+id/compnay_bio"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/default_margin"/>
+        android:layout_height="match_parent"
+        android:padding="@dimen/default_margin"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/recruiters_title"/>
-    
+
+        <TextView
+            android:id="@+id/front_alert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/design_default_color_error"
+            android:textSize="16sp"
+            android:text="You are in the top 5, let us know when you're here!"
+            android:visibility="invisible"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/here_button"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_gravity="center"
+            android:text="I'm Here"
+            android:visibility="invisible"
+            />
+
+
+
+        <TextView
+            android:id="@+id/compnay_bio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recruiters_title"
+            android:textSize="24sp"
+            android:textColor="@color/black"/>
+
+
+    </LinearLayout>
+
+
+
 </LinearLayout>

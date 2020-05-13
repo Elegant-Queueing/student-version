@@ -9,6 +9,8 @@ public class MainActivity extends AppCompatActivity {
     public static final RelativeLayout.LayoutParams PARAMS = new RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
 
+    public static final String API_URL = "http://ec2-34-216-222-231.us-west-2.compute.amazonaws.com:8080";
+
     private Button login;
     private Button signup;
     private RelativeLayout contents;

@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.regex.Pattern;
 
 public class FairActivity extends AppCompatActivity implements View.OnClickListener {
+    public String studentId = "oFEdwg9lnWPPVjHPL0Nk";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -35,7 +35,11 @@
         android:textAlignment="textStart"
         android:gravity="start"
         android:textColor="@color/black"
-        android:fontFamily="sans-serif"/>
+        android:fontFamily="sans-serif"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:scrollHorizontally="false"/>
 
     <TextView
         android:id="@+id/compnay_desc"
