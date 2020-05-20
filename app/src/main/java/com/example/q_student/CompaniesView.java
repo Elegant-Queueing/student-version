@@ -17,6 +17,12 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,6 +71,10 @@ public class CompaniesView extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * adds a company to the view.
+     * @param company the Company object to be added to the view.
+     */
     public void addCompany(Company company) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View cardView = inflater.inflate(R.layout.company_list_item, null);
@@ -73,15 +83,15 @@ public class CompaniesView extends Fragment implements View.OnClickListener {
         companyName.setText(company.getName());
         TextView companyDesc = cardView.findViewById(R.id.compnay_desc);
         companyDesc.setText(company.getBio());
-
-//            ImageView companyPic = cardView.findViewById(R.id.company_picture);
-//            companyPic.setImageResource(R.drawable.ic_account_circle_black_24dp);
         cardView.setOnClickListener(this);
         companies.add(company);
         view.addView(cardView);
-
     }
 
+    /**
+     * onClick action.
+     * @param view, the View object that has been clicked.
+     */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onClick(View view) {
         FragmentTransaction transaction = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
@@ -91,9 +101,11 @@ public class CompaniesView extends Fragment implements View.OnClickListener {
 
     }
 
+    /**
+     * An Asynchronous class that gets company info and updates the UI by calling addCompany
+     */
     class getCompany extends AsyncTask<Void, Void, String> {
 
-        private Exception exception;
         private String company;
 
         public getCompany(String company) {
@@ -105,20 +117,12 @@ public class CompaniesView extends Fragment implements View.OnClickListener {
         protected String doInBackground(Void... urls) {
 
             try {
-                URL url = new URL(MainActivity.API_URL + "/fair/get/fair-id/" + getArguments().getString("fairId") + "/company-id/" + company);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                try {
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String line;
-                    while ((line = bufferedReader.readLine()) != null) {
-                        stringBuilder.append(line).append("\n");
-                    }
-                    bufferedReader.close();
-                    return stringBuilder.toString();
-                } finally {
-                    urlConnection.disconnect();
-                }
+                OkHttpClient client = new OkHttpClient();
+                RequestBody body = RequestBody.create(MediaType.parse("text/plain"), "");
+                assert getArguments() != null;
+                Request request = new Request.Builder().url(MainActivity.API_URL + "/fair/get/fair-id/" + getArguments().getString("fairId") + "/company-id/" + company).method("POST", body).build();
+                Response response = client.newCall(request).execute();
+                return response.body().string();
             } catch (Exception e) {
                 Log.e("ERROR", e.getMessage(), e);
                 return null;

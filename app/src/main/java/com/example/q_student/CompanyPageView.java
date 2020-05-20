@@ -61,6 +61,9 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
         new getCompany().execute();
     }
 
+    /**
+     * Populates the page with company information from database
+     */
     private void populatePage(Company company) {
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -81,6 +84,9 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
         waitChecker.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    /**
+     * updates the UI to signify the user is in the queue
+     */
     private void queueJoined(String employee) {
         this.employee = employee;
         View companyCard = view.findViewById(R.id.company_card);
@@ -98,6 +104,9 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
         companyAction.setId(R.id.leave_queue);
     }
 
+    /**
+     * Updates the UI to signify that a user is not in the queue
+     */
     private void queueLeft() {
         View companyCard = view.findViewById(R.id.company_card);
         Button companyAction = companyCard.findViewById(R.id.leave_queue);
@@ -116,12 +125,20 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
         companyAction.setId(R.id.join_queue);
     }
 
+    /**
+     * Updates the wait time on the UI
+     */
     private void updateWait(String waitTime) {
         View waitCard = view.findViewById(R.id.wait_card);
         TextView waitText = waitCard.findViewById(R.id.wait_time);
         waitText.invalidate();
         waitText.setText(waitTime);
     }
+
+    /**
+     * Updates the UI to give the option to the user to
+     * join the physical queue, and prompts them to do so
+     */
     private void allowJoinPhysical() {
         TextView frontAlert = view.findViewById(R.id.front_alert);
         Button hereButton = view.findViewById(R.id.here_button);
@@ -157,6 +174,9 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * asynchronous class that calls backend API to join a physical queue
+     */
     class JoinPhysical extends AsyncTask<Void, Void, String> {
 
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -183,6 +203,9 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * asynchronous class that calls backend API to leave the queue, updates UI through queueLeft
+     */
     class LeaveQueue extends AsyncTask<Void, Void, String> {
 
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -213,6 +236,10 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
     }
 
 
+    /**
+     * asynchronous class that calls backend API to get the wait time, current position, and employee information
+     * if available. If not, just gets wait time. Updates UI with information gathered. Constantly runs in the background.
+     */
     class CheckWait extends AsyncTask<Void, String, String> {
 
         private Exception exception;
@@ -309,6 +336,9 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * asynchronous class that calls backend API to join the virtual queue, updates UI through QueueJoined
+     */
     class JoinQueue extends AsyncTask<Void, Void, String> {
 
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -348,6 +378,9 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * asynchronous class that calls backend API to get company information, calls populatePage to update UI
+     */
     class getCompany extends AsyncTask<Void, Void, String> {
 
         protected String doInBackground(Void... urls) {
