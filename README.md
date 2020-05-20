@@ -1,6 +1,6 @@
 # student-version
-[User Manual](#User Manual)
-[Developer Manual](#Developer Manual)
+[User Manual](#User-Manual)
+[Developer Manual](#Developer-Manual)
 
 ## setup:
 1. Download android studio: https://developer.android.com/studio
