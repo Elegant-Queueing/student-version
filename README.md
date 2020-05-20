@@ -6,11 +6,11 @@
 
 # User Manual
 
-This is a user manula for the front end of the student mobile application.
+This is a user manual for the front end of the student mobile application.
 
 ## What does the student app do?
 
-The student app allows students to join the virtual and physical queues in for a given company and a given career fair. Students will also manage their account on the app so they can edit things such as their resume and their profile information. 
+The student app allows students to join the virtual and physical queues for a given company and a given career fair. Students will also manage their account on the app so they can edit things such as their resume and their profile information. 
 
 Students would use this application to avoid long lines at crowded career fairs to save time in the recruiting process.
 
@@ -23,7 +23,7 @@ Currently the application is only available to install by cloning the github rep
 4.  Click "build" button, which is a green hammer on the top of Android Studio
 5.  On the top of the screen of Android Studio, click "AVD manager"
 6.  Create a new virtual device using Android 9.0
-7. If you are going to run the back end locally, ensure you have the redis server and the backend server set up and running. See the backend documentation for more details. If you are running the backend on an instance, disregard this step.
+7. If you are going to run the back end locally, ensure you have the redis server and the backend server set up and running. See the [backend documentation](https://github.com/Elegant-Queueing/q-backend) for more details. If you are running the backend on an instance, disregard this step.
 8. Ensure you are connected to the correct API by looking at and editing the "API_URL" variable in the MainActivity class in Android Studio. If running localy, this should be "http://10.0.2.2:8080" If running on an instance should be the url of that instance.
 
 ## How to run
@@ -75,7 +75,7 @@ When reporting a bug, be sure to include the following vital information:
 
 # Developer Manual
 
-This is a developer manula for the front end of the student mobile application.
+This is a developer manual for the front end of the student mobile application.
 
 ## How to obtain source code
 Clone this [github repository](https://github.com/Elegant-Queueing/student-version) to obtain the source code. The back-end is obtained through a [seperate repository](https://github.com/Elegant-Queueing/q-backend).
