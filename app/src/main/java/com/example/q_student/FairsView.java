@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,23 +16,23 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
 import Objects.Fair;
 
-import javax.net.ssl.HttpsURLConnection;
 
 public class FairsView extends Fragment implements View.OnClickListener {
     LinearLayout view;
@@ -54,6 +53,10 @@ public class FairsView extends Fragment implements View.OnClickListener {
         new GetFairList().execute();
     }
 
+    /**
+     * adds a fair to the view.
+     * @param fair the Fair object to be added to the view.
+     */
     public void addFair(Fair fair) {
 
 
@@ -64,9 +67,6 @@ public class FairsView extends Fragment implements View.OnClickListener {
         fairName.setText(fair.getName());
         TextView fairDesc = cardView.findViewById(R.id.fair_desc);
         fairDesc.setText(fair.getDesc());
-
-//            ImageView fairPicture = cardView.findViewById(R.id.fair_picture);
-//            fairPicture.setImageResource(R.drawable.ic_account_circle_black_24dp);
         cardView.setOnClickListener(this);
         view.addView(cardView);
         fairs.add(fair);
@@ -80,28 +80,20 @@ public class FairsView extends Fragment implements View.OnClickListener {
         transaction.commit();
     }
 
+    /**
+     * Asynchronous class to get list of fairs. Updates UI with addFair
+     */
     class GetFairList extends AsyncTask<Void, Void, String> {
-
-        private Exception exception;
-
 
         protected String doInBackground(Void... urls) {
 
             try {
-                URL url = new URL(MainActivity.API_URL + "/fair/get-all");
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                try {
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String line;
-                    while ((line = bufferedReader.readLine()) != null) {
-                        stringBuilder.append(line).append("\n");
-                    }
-                    bufferedReader.close();
-                    return stringBuilder.toString();
-                } finally {
-                    urlConnection.disconnect();
-                }
+                OkHttpClient client = new OkHttpClient();
+                RequestBody body = RequestBody.create(MediaType.parse("text/plain"), "");
+                assert getArguments() != null;
+                Request request = new Request.Builder().url(MainActivity.API_URL + "/fair/get-all").method("POST", body).build();
+                Response response = client.newCall(request).execute();
+                return response.body().string();
             } catch (Exception e) {
                 Log.e("ERROR", e.getMessage(), e);
                 return null;
