@@ -20,7 +20,7 @@ Currently the application is only available to install by cloning the github rep
 1. Clone the github repo [student-version](https://github.com/Elegant-Queueing/student-version)
 2.  Download android studio:  [https://developer.android.com/studio](https://developer.android.com/studio)
 3.  Using Android Studio, click file -> open -> select this repository
-4.  Click "build" button, which is a green hammer on the top of Android Studio
+4.  Click "build" button, which is a green hammer on the top of Android Studio ![build button](https://i.imgur.com/NPBwtZf.png)
 5.  On the top of the screen of Android Studio, click "AVD manager"
 6.  Create a new virtual device using Android 9.0
 7. If you are going to run the back end locally, ensure you have the redis server and the backend server set up and running. See the [backend documentation](https://github.com/Elegant-Queueing/q-backend) for more details. If you are running the backend on an instance, disregard this step.
@@ -135,7 +135,7 @@ contains the Gradle build files
 
 ## How to build
 
-After following the instructions to open the file in Android Studio, simply click "build" button, which is a green hammer on the top of Android Studio
+After following the instructions to open the file in Android Studio, simply click "build" button, which is a green hammer on the top of Android Studio ![build button](https://i.imgur.com/NPBwtZf.png)
 
 ## How to test
 in com.example.q_student (test) there is a file called ExampleUnitTest. Open this file and you will see all the unit tests for the application. There are two arrows next to the header for the ExampleUnitTest class, click this to run all tests, or click the arrow next to a specific test method to run that specific test.
