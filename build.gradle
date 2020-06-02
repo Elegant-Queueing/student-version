@@ -25,6 +25,10 @@ allprojects {
     }
 }
 
+test {
+    exclude '**/ExampleUnitTest.class'
+}
+
 sourceSets {
     test {
         java {
