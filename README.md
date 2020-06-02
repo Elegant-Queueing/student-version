@@ -24,7 +24,7 @@ Currently the application is only available to install by cloning the github rep
 5.  On the top of the screen of Android Studio, click "AVD manager"
 6.  Create a new virtual device using Android 9.0
 7. If you are going to run the back end locally, ensure you have the redis server and the backend server set up and running. See the [backend documentation](https://github.com/Elegant-Queueing/q-backend) for more details. If you are running the backend on an instance, disregard this step.
-8. Ensure you are connected to the correct API by looking at and editing the "API_URL" variable in the MainActivity class in Android Studio. If running localy, this should be "http://10.0.2.2:8080" If running on an instance should be the url of that instance.
+8. Ensure you are connected to the correct API by looking at and editing the "API_URL" variable in the MainActivity class, located in java/com.example.q_student, in Android Studio. If running localy, this should be "http://10.0.2.2:8080" If running on an instance should be the url of that instance.
 
 ## How to run
 
