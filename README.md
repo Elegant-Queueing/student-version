@@ -28,7 +28,7 @@ Currently the application is only available to install by cloning the github rep
 
 ## How to run
 
-After following all the steps above, click the "run" button on the top of Android Studio to run the app on your emulator. The run button is a green arrow.
+After following all the steps above, click the "run" button on the top of Android Studio to run the app on your emulator. The run button is a green arrow. Ensure you are running using the default APK and the default activity.
 
 ## How to use
 
