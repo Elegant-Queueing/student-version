@@ -52,7 +52,7 @@ public class FairActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                Toast.makeText(this, "click..!!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(FairActivity.this, ProfileActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

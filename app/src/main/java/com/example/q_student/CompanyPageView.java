@@ -185,7 +185,7 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
                 OkHttpClient client = new OkHttpClient();
                 MediaType mediaType = MediaType.parse("text/plain");
                 RequestBody body = RequestBody.create(mediaType, "");
-                Request request = new Request.Builder().url(MainActivity.API_URL + "/queue/join/employee-id/" + employee + "/student-id/" + ((FairActivity) Objects.requireNonNull(getActivity())).studentId).method("POST", body).build();
+                Request request = new Request.Builder().url(MainActivity.API_URL + "/queue/join/employee-id/" + employee + "/student-id/" + MainActivity.uid).addHeader("token", MainActivity.token).method("POST", body).build();
                 client.newCall(request).execute();
                 return null;
 
@@ -216,7 +216,7 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
                 OkHttpClient client = new OkHttpClient();
                 MediaType mediaType = MediaType.parse("text/plain");
                 RequestBody body = RequestBody.create(mediaType, "");
-                Request request = new Request.Builder().url(MainActivity.API_URL + "/queue/leave/company-id/" + getArguments().getString("companyId") + "/student-id/" + ((FairActivity) Objects.requireNonNull(getActivity())).studentId + "/role/SWE").method("DELETE", body).build();
+                Request request = new Request.Builder().url(MainActivity.API_URL + "/queue/leave/company-id/" + getArguments().getString("companyId") + "/student-id/" + MainActivity.uid + "/role/SWE").addHeader("token", MainActivity.token).method("DELETE", body).build();
                 client.newCall(request).execute();
                 return null;
 
@@ -264,7 +264,7 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
             while (true) {
                 try {
                     OkHttpClient client = new OkHttpClient();
-                    Request request = new Request.Builder().url(MainActivity.API_URL + "/queue/status/student-id/" + ((FairActivity) Objects.requireNonNull(getActivity())).studentId).build();
+                    Request request = new Request.Builder().url(MainActivity.API_URL + "/queue/status/student-id/" + MainActivity.uid).addHeader("token", MainActivity.token).build();
                     Response response = client.newCall(request).execute();
                     String result = response.body().string();
 
@@ -287,7 +287,7 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
                     try {
 
                         OkHttpClient client = new OkHttpClient();
-                        Request request = new Request.Builder().url(MainActivity.API_URL + "/queue/wait-time/company-id/" + company + "/role/SWE").build();
+                        Request request = new Request.Builder().url(MainActivity.API_URL + "/fair/wait-time/company-id/" + company + "/role/SWE").addHeader("token", MainActivity.token).build();
                         Response response = client.newCall(request).execute();
                         String result = response.body().string();
 
@@ -346,9 +346,15 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
 
             try {
                 OkHttpClient client = new OkHttpClient();
-                RequestBody body = RequestBody.create(MediaType.parse("text/plain"), "");
+                JSONObject bodyText = new JSONObject();
+                JSONObject bodyTextInner = new JSONObject();
+                bodyText.put("student", bodyTextInner);
+                bodyTextInner.put("id", MainActivity.uid);
+                bodyTextInner.put("name",MainActivity.userName);
+                RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), bodyText.toString());
+                Log.i("INFO", bodyText.toString());
                 assert getArguments() != null;
-                Request request = new Request.Builder().url(MainActivity.API_URL + "/queue/join/company-id/" + getArguments().getString("companyId") + "/student-id/" + ((FairActivity) Objects.requireNonNull(getActivity())).studentId + "/role/SWE/name/Jeff").method("POST", body).build();
+                Request request = new Request.Builder().url(MainActivity.API_URL + "/queue/join/company-id/" + getArguments().getString("companyId") + "/role" + "/SWE").method("POST", body).addHeader("token", MainActivity.token).build();
                 Response response = client.newCall(request).execute();
                 return response.body().string();
 
@@ -363,13 +369,14 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
                 response = "THERE WAS AN ERROR";
             }
             try {
+                Log.i("INFO", response);
                 JSONObject jsonStatus = ((JSONObject) new JSONTokener(response).nextValue()).getJSONObject("queue-status");
                 if(jsonStatus.getInt("position") <= 5) {
                     queueJoined(null);
                 } else{
                     queueJoined(jsonStatus.getString("employee"));
                 }
-                Log.i("INFO", response);
+
 
 
             } catch (JSONException e) {
@@ -387,7 +394,7 @@ public class CompanyPageView extends Fragment implements View.OnClickListener {
 
             try {
                 OkHttpClient client = new OkHttpClient();
-                Request request = new Request.Builder().url(MainActivity.API_URL + "/fair/get/fair-id/" + getArguments().getString("fairId") + "/company-id/" + getArguments().getString("companyId")).build();
+                Request request = new Request.Builder().url(MainActivity.API_URL + "/fair/get/fair-id/" + getArguments().getString("fairId") + "/company-id/" + getArguments().getString("companyId")).addHeader("token", MainActivity.token).build();
                 Response response = client.newCall(request).execute();
                 return response.body().string();
 

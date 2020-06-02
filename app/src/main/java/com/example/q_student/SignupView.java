@@ -1,15 +1,40 @@
 package com.example.q_student;
 
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.util.Objects;
+import java.util.concurrent.Executor;
 import java.util.regex.Pattern;
 
 public class SignupView extends Fragment implements View.OnClickListener {
@@ -20,6 +45,7 @@ public class SignupView extends Fragment implements View.OnClickListener {
     private TextInputEditText passwordconfirm;
     private TextInputEditText password;
     private TextInputLayout passwordconfirmbox;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.signup, container, false);
@@ -56,17 +82,114 @@ public class SignupView extends Fragment implements View.OnClickListener {
                 if (name.getText() == null || name.getText().toString().equals("")) {
                     namebox.setError(getResources().getString(R.string.required_field_error));
                     valid = false;
+                } else if(name.getText().toString().split(" ").length != 2) {
+                    namebox.setError("Please enter a first and last name");
+                    valid = false;
                 } else{
                     namebox.setError(null);
                 }
                 if(valid){
-                    // create account
+                    MainActivity.mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                            .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        MainActivity.mAuth.getCurrentUser().getIdToken(true)
+                                                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                                        if (task.isSuccessful()) {
+                                                            MainActivity.token = task.getResult().getToken();
+                                                            new AddStudent().execute();
+                                                        }
+                                                    }
+                                                });
+
+                                    } else {
+                                        Log.e("ERROR", "createUserWithEmail:failure", task.getException());
+                                        Toast.makeText(getContext(), "Authentication failed.",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                 }
         }
 
     }
 
+    class AddStudent extends AsyncTask<Void, Void, String> {
 
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        protected String doInBackground(Void... urls) {
+
+            try {
+                Log.i("INFO",  MainActivity.mAuth.getCurrentUser().getUid());
+                JSONObject bodyText = new JSONObject();
+                bodyText.put("email", email.getText().toString());
+                bodyText.put("first_name", name.getText().toString().split(" ")[0]);
+                bodyText.put("last_name", name.getText().toString().split(" ")[1]);
+                bodyText.put("university_id", " ");
+                bodyText.put("major", " ");
+                bodyText.put("role", "SWE");
+                bodyText.put("bio", " ");
+                bodyText.put("gpa", 0.0);
+                JSONObject gradDate = new JSONObject();
+                gradDate.put("seconds", 0);
+                gradDate.put("nanos", 0);
+                bodyText.put("grad_date", gradDate);
+                bodyText.put("international", false);
+                RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), bodyText.toString());
+                OkHttpClient client = new OkHttpClient();
+                Request request = new Request.Builder().url(MainActivity.API_URL + "/student/add/").method("POST", body).addHeader("token", MainActivity.token).build();
+                String response = client.newCall(request).execute().toString();
+                Log.i("INFO", response);
+                return response;
+            } catch (Exception e) {
+                Log.e("ERROR", e.getMessage(), e);
+            }
+            return null;
+        }
+        protected void onPostExecute(String response) {
+            if (response == null) {
+                response = "THERE WAS AN ERROR";
+            }
+            Log.i("INFO", response);
+            MainActivity.userName = name.getText().toString().split(" ")[0] + " " + name.getText().toString().split(" ")[1];
+            new GetUid().execute();
+        }
+
+
+    }
+    class GetUid extends AsyncTask<Void, Void, String> {
+
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        protected String doInBackground(Void... urls) {
+
+            try {
+                OkHttpClient client = new OkHttpClient();
+                Request request = new Request.Builder().url(MainActivity.API_URL + MainActivity.user.getEmail()).addHeader("token", MainActivity.token).build();
+                String response = client.newCall(request).execute().toString();
+                Log.i("INFO", response);
+                return response;
+            } catch (Exception e) {
+                Log.e("ERROR", e.getMessage(), e);
+            }
+            return null;
+        }
+
+        protected void onPostExecute(String response) {
+            if (response == null) {
+                response = "THERE WAS AN ERROR";
+            }
+            Log.i("INFO", response);
+            String studentId = null;
+            try {
+                studentId = ((JSONObject) new JSONTokener(response).nextValue()).getString("student_id");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            MainActivity.uid = studentId;
+
+        }
+    }
 
     public static boolean isValidEmail(String email)
     {
@@ -80,5 +203,6 @@ public class SignupView extends Fragment implements View.OnClickListener {
             return false;
         return pat.matcher(email).matches();
     }
+
 
 }

@@ -118,9 +118,8 @@ public class CompaniesView extends Fragment implements View.OnClickListener {
 
             try {
                 OkHttpClient client = new OkHttpClient();
-                RequestBody body = RequestBody.create(MediaType.parse("text/plain"), "");
                 assert getArguments() != null;
-                Request request = new Request.Builder().url(MainActivity.API_URL + "/fair/get/fair-id/" + getArguments().getString("fairId") + "/company-id/" + company).method("POST", body).build();
+                Request request = new Request.Builder().url(MainActivity.API_URL + "/fair/get/fair-id/" + getArguments().getString("fairId") + "/company-id/" + company).addHeader("token", MainActivity.token).build();
                 Response response = client.newCall(request).execute();
                 return response.body().string();
             } catch (Exception e) {

@@ -89,9 +89,9 @@ public class FairsView extends Fragment implements View.OnClickListener {
 
             try {
                 OkHttpClient client = new OkHttpClient();
-                RequestBody body = RequestBody.create(MediaType.parse("text/plain"), "");
                 assert getArguments() != null;
-                Request request = new Request.Builder().url(MainActivity.API_URL + "/fair/get-all").method("POST", body).build();
+                String test = MainActivity.token;
+                Request request = new Request.Builder().url(MainActivity.API_URL + "/fair/get-all").addHeader("token", MainActivity.token).build();
                 Response response = client.newCall(request).execute();
                 return response.body().string();
             } catch (Exception e) {
