@@ -139,7 +139,7 @@ public class SignupView extends Fragment implements View.OnClickListener {
                 RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), bodyText.toString());
                 OkHttpClient client = new OkHttpClient();
                 Request request = new Request.Builder().url(MainActivity.API_URL + "/student/add/").method("POST", body).addHeader("token", MainActivity.token).build();
-                String response = client.newCall(request).execute().toString();
+                String response = client.newCall(request).execute().body().string();
                 Log.i("INFO", response);
                 return response;
             } catch (Exception e) {
@@ -165,8 +165,8 @@ public class SignupView extends Fragment implements View.OnClickListener {
 
             try {
                 OkHttpClient client = new OkHttpClient();
-                Request request = new Request.Builder().url(MainActivity.API_URL + MainActivity.user.getEmail()).addHeader("token", MainActivity.token).build();
-                String response = client.newCall(request).execute().toString();
+                Request request = new Request.Builder().url(MainActivity.API_URL + "/student/get/email/" + MainActivity.mAuth.getCurrentUser().getEmail()).addHeader("token", MainActivity.token).build();
+                String response = client.newCall(request).execute().body().string();
                 Log.i("INFO", response);
                 return response;
             } catch (Exception e) {
@@ -187,6 +187,7 @@ public class SignupView extends Fragment implements View.OnClickListener {
                 e.printStackTrace();
             }
             MainActivity.uid = studentId;
+            getContext().startActivity(new Intent(getContext(), FairActivity.class));
 
         }
     }

@@ -103,8 +103,8 @@ public class LoginView extends Fragment implements View.OnClickListener {
 
             try {
                 OkHttpClient client = new OkHttpClient();
-                Request request = new Request.Builder().url(MainActivity.API_URL + MainActivity.user.getEmail()).addHeader("token", MainActivity.token).build();
-                String response = client.newCall(request).execute().toString();
+                Request request = new Request.Builder().url(MainActivity.API_URL + "/student/get/email/" + MainActivity.mAuth.getCurrentUser().getEmail()).addHeader("token", MainActivity.token).build();
+                String response = client.newCall(request).execute().body().string();
                 Log.i("INFO", response);
                 return response;
             } catch (Exception e) {
@@ -121,6 +121,7 @@ public class LoginView extends Fragment implements View.OnClickListener {
             String studentId = null;
             String fullName = null;
             try {
+
                 studentId = ((JSONObject) new JSONTokener(response).nextValue()).getString("student_id");
                 fullName = ((JSONObject) new JSONTokener(response).nextValue()).getString("first_name") + " " + ((JSONObject) new JSONTokener(response).nextValue()).getString("last_name");
             } catch (JSONException e) {
