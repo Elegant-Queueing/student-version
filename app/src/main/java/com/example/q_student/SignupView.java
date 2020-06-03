@@ -126,13 +126,13 @@ public class SignupView extends Fragment implements View.OnClickListener {
                 bodyText.put("email", email.getText().toString());
                 bodyText.put("first_name", name.getText().toString().split(" ")[0]);
                 bodyText.put("last_name", name.getText().toString().split(" ")[1]);
-                bodyText.put("university_id", " ");
-                bodyText.put("major", " ");
+                bodyText.put("university_id", "University of Washington");
+                bodyText.put("major", "Computer Science");
                 bodyText.put("role", "SWE");
-                bodyText.put("bio", " ");
-                bodyText.put("gpa", 0.0);
+                bodyText.put("bio", "my bio");
+                bodyText.put("gpa", 4.0);
                 JSONObject gradDate = new JSONObject();
-                gradDate.put("seconds", 0);
+                gradDate.put("seconds", 1592506815);
                 gradDate.put("nanos", 0);
                 bodyText.put("grad_date", gradDate);
                 bodyText.put("international", false);

@@ -42,6 +42,7 @@ import Objects.Fair;
 public class CompaniesView extends Fragment implements View.OnClickListener {
     LinearLayout view;
     List<Company> companies;
+    int i;
 
     public static final CompaniesView newInstance(String fairName, String[] companies, String fairId) {
         CompaniesView view = new CompaniesView();
@@ -59,16 +60,15 @@ public class CompaniesView extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.company_list, container, false);
         view = rootView.findViewById(R.id.list_layout);
         companies = new ArrayList<>();
-
+        i = 0;
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        for (String company : getArguments().getStringArray("companies")) {
-            new getCompany(company).execute();
-        }
+        new getCompany(getArguments().getStringArray("companies")[0]).execute();
+
     }
 
     /**
@@ -82,7 +82,9 @@ public class CompaniesView extends Fragment implements View.OnClickListener {
         TextView companyName = cardView.findViewById(R.id.company_name);
         companyName.setText(company.getName());
         TextView companyDesc = cardView.findViewById(R.id.compnay_desc);
-        companyDesc.setText(company.getBio());
+        if(company.getBio() != null) {
+            companyDesc.setText(company.getBio());
+        }
         cardView.setOnClickListener(this);
         companies.add(company);
         view.addView(cardView);
@@ -104,6 +106,8 @@ public class CompaniesView extends Fragment implements View.OnClickListener {
     /**
      * An Asynchronous class that gets company info and updates the UI by calling addCompany
      */
+
+
     class getCompany extends AsyncTask<Void, Void, String> {
 
         private String company;
@@ -121,6 +125,7 @@ public class CompaniesView extends Fragment implements View.OnClickListener {
                 assert getArguments() != null;
                 Request request = new Request.Builder().url(MainActivity.API_URL + "/fair/get/fair-id/" + getArguments().getString("fairId") + "/company-id/" + company).addHeader("token", MainActivity.token).build();
                 Response response = client.newCall(request).execute();
+
                 return response.body().string();
             } catch (Exception e) {
                 Log.e("ERROR", e.getMessage(), e);
@@ -135,10 +140,10 @@ public class CompaniesView extends Fragment implements View.OnClickListener {
             Log.i("INFO", response);
 
             try {
-                JSONObject jsonCompnay = ((JSONObject) new JSONTokener(response).nextValue()).getJSONObject("company");
+                JSONObject jsonCompany = ((JSONObject) new JSONTokener(response).nextValue()).getJSONObject("company");
 
-                JSONArray rolesJson = jsonCompnay.getJSONArray("roles");
-                JSONArray employeeJson = jsonCompnay.getJSONArray("employees");
+                JSONArray rolesJson = jsonCompany.getJSONArray("roles");
+                JSONArray employeeJson = jsonCompany.getJSONArray("employees");
                 String[] roles = new String[rolesJson.length()];
                 String[] employees = new String[employeeJson.length()];
 
@@ -148,9 +153,12 @@ public class CompaniesView extends Fragment implements View.OnClickListener {
                 for (int j = 0; j < employeeJson.length(); j++) {
                     employees[j] = employeeJson.getString(j);
                 }
-                Company newCompany = new Company(employees, company, roles, jsonCompnay.getString("bio"), jsonCompnay.getString("website"), jsonCompnay.getString("name"));
+                Company newCompany = new Company(employees, company, roles, jsonCompany.getString("bio"), jsonCompany.getString("website"), jsonCompany.getString("name"));
                 addCompany(newCompany);
-
+                if(i < companies.size()) {
+                    i++;
+                    new getCompany(getArguments().getStringArray("companies")[i]).execute();
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -121,7 +121,6 @@ public class LoginView extends Fragment implements View.OnClickListener {
             String studentId = null;
             String fullName = null;
             try {
-
                 studentId = ((JSONObject) new JSONTokener(response).nextValue()).getString("student_id");
                 fullName = ((JSONObject) new JSONTokener(response).nextValue()).getString("first_name") + " " + ((JSONObject) new JSONTokener(response).nextValue()).getString("last_name");
             } catch (JSONException e) {
